@@ -1,12 +1,18 @@
 
+
+let starRating=3;
 let firstClick=1;
 let firstClickId="";
 let firstClickPosition=-1;
 let firstClickElement=null;
 let secondClickElement=null;
 let pictureup=0; /*counts the number of picture that has been turned up to know when the user has won*/
-
+let countMove=0;
+let pictureArray=[];
+let Timer=displayTime();
+let runTimer=0;
 let statusArray=[]; /*Keeps tract of pictures that have been turned up. Further clicks on such pictures have no effect*/
+
 for (let i=0;i<16;i++){
 	statusArray.push("down"); /*All the array positions are initialized to down*/
 }
@@ -24,53 +30,80 @@ for (let i=0; i<4; i++){
 
     	/*setting the id of the box to a number value depending on its position in row and column- 
     	This makes it easy to work with the different arrays*/
-    	box.addEventListener("click",function(event){
-    	let posn=new Number(i*4+j);
-    	box.setAttribute("id",posn); 
-    		position=Number(event.target.id);/*The position in the grid is obtainable from the id of the box*/
-    		if (statusArray[position]=="down"){
-    			if (firstClick==1){  /*This is a first clik of a pair*/
-    				let myelement=document.getElementById(event.target.id);
-    				firstClickPosition=position; /*note the grid position*/
-    				statusArray[position]="up";  /*Change the status of the card to up so that further click on it won't have any effect*/
-    				firstClickElement=event.target; 
-    				firstClick=0;
-    				/*The click was on the box- The firstchild is the picture- We need to sore this element in a variable
-    				 to compare with the next element clicked*/
-    				let element=event.target.firstChild;
-    				firstClickElement=element;
-    				element.setAttribute("style","display:block"); /*After the click on the block the picture is displayed*/
-    				    				   }
-    		     else{
-    		     	statusArray[position]="up";
-    		     	firstClick=1;
-    				let element=event.target.firstChild;
-    				element.setAttribute("style","display:block");
-    				if (firstClickElement.id!=element.id){
-    					statusArray[firstClickPosition]="down";
-    			    	statusArray[position]="down";
-    			    	secondClickElement=element;
-    			    	setTimeout(myFunction,800);
-    			    }
-    			    else {
-    			    	pictureup +=2;
-    			    }
-    				}
+    	
+        let posn=new Number(i*4+j);
+        box.setAttribute("id",posn); 
+        box.addEventListener("click",function(event){
 
-    		     }
-    		     if (pictureup==16){
-    		     	alert("You have won");
-    		     }
-    		
-    	})
-    	div1.appendChild(box);
+            let position=Number(event.target.id);//The position in the grid is obtainable from the id of the box
+            if (statusArray[position]=="down"){
+                 countMove++;
+                 countMoveElement=document.getElementById("myMoveCount");
+                 countMoveElement.innerHTML=countMove;
+                if (countMove==1){
+                    runTimer=setInterval(Timer,1000);
+                 }
+
+                 if (countMove>44)
+                    starRating=0
+                 else if (countMove>38)
+                    starRating=1
+                else if (countMove>32)
+                     starRating=2;
+                else starRating=3;
+                setStars(starRating);
+
+                  if (firstClick==1){  //This is a first clik of a pair
+                    let myelement=document.getElementById(event.target.id);
+                    firstClickPosition=position; //note the grid position
+                    statusArray[position]="up";  //Change the status of the card to up so that further click on it won't have any effect
+                    firstClickElement=event.target; 
+                    firstClick=0;
+                    //The click was on the box- The firstchild is the picture- We need to sore this element in a variable
+                    // to compare with the next element clicked
+                    let element=event.target.firstChild;
+                    firstClickElement=element;
+                    element.setAttribute("style","display:block"); //After the click on the block the picture is displayed
+                                           }
+                 else{
+                    statusArray[position]="up";
+                    firstClick=1;
+                    let element=event.target.firstChild;
+                    element.setAttribute("style","display:block");
+                    if (firstClickElement.id!=element.id){
+                        statusArray[firstClickPosition]="down";
+                        statusArray[position]="down";
+                        secondClickElement=element;
+                        setTimeout(myFunction,800);
+                       }
+                    else { 
+                        pictureup +=2;
+                    }
+
+                    }
+
+                 }
+                 if (pictureup==16){
+                    mymodal=document.getElementById("myModal");
+                     mymodal.style.display="block";
+                     //If user wins stop the timer
+                     clearInterval(runTimer);
+                     let span1=document.getElementsByClassName("close")[0];
+                     span1.onclick=function(){
+                      mymodal.style.display="none";}
+                 }
+
+});
+        div1.appendChild(box);
         div.appendChild(div1);
     }
     
      myframe.appendChild(div);
 }
+
  /*courtesy- https://unsplash.com/search/photos/flora-and-fauna*/
-let pictureArray=[`<img id=picture1 src="images/picture1.jpg" alt="picture1">`, `<img id=picture2 src="images/picture2.jpg" alt="picture2">`,
+function initialiseArray(){
+pictureArray=[`<img id=picture1 src="images/picture1.jpg" alt="picture1">`, `<img id=picture2 src="images/picture2.jpg" alt="picture2">`,
                    `<img id=picture3 src="images/picture3.jpg" alt="picture3">`, `<img id=picture4 src="images/picture4.jpg" alt="picture4">`,
                    `<img id=picture5 src="images/picture5.jpg" alt="picture5">`,`<img id=picture6 src="images/picture6.jpg" alt="picture6">`,
                   `<img id=picture7 src="images/picture7.jpg" alt="picture7">`,`<img id=picture8 src="images/picture8.jpg" alt="picture8">`,
@@ -79,8 +112,10 @@ let pictureArray=[`<img id=picture1 src="images/picture1.jpg" alt="picture1">`, 
                    `<img id=picture5 src="images/picture5.jpg" alt="picture5">`,`<img id=picture6 src="images/picture6.jpg" alt="picture6">`,
                   `<img id=picture7 src="images/picture7.jpg" alt="picture7">`,`<img id=picture8 src="images/picture8.jpg" alt="picture8">`]
                   
-
+}
 /*shuffle the array- To randomize */
+function reshuffleArray(){
+
 let currentIndex=16;
 while (0 != currentIndex) {
 
@@ -102,11 +137,90 @@ for (let i=0; i<selector.length;i++){
 	myelement.firstChild.setAttribute("style","display:none");
 	k++;
 	}
+}
+setStars(starRating);
 
+//This function displays the star rating a
+function setStars(starNum){
+    let str='<p>Star Rating:';
+   //Display number of stars for star rating
+    for (let i=0; i<starNum;i++){
+        str=str + '<span class="stars glyphicon glyphicon-asterisk"></span>'
+    }
+   //If there is less than 3 *, put --- in place of *
+    for (let i= starNum; i<3;i++){
+        str=str+"-";
+    }
+
+    str=str+'</p>'
+    let starElement=document.getElementById("mystar_rating");
+    starElement.innerHTML=str;
+}
+
+//This function turns both cards adown if the cards don't match
 function myFunction(){
  firstClickElement.setAttribute("style","display:none");
  secondClickElement.setAttribute("style","display:none");
 }
+
+//This function displays a timer that is updated every second.
+function displayTime(){
+  let seconds=0;
+  let minutes=0;
+  let stringSecond="";
+  let stringMinute="";
+  let myTimer=document.getElementById("mytimer");
+  myTimer.innerHTML=`Timer: 00:00`;
+  return function(){
+     seconds=seconds+1;
+  
+  if (seconds>=60){
+    seconds=seconds-60;
+    minutes=minutes+1;
+    //Time is reset after 1 hr
+    if (minutes>60){
+        minutes=0
+      } }
+      if (seconds<10)
+          stringSecond="0"+seconds;
+      else
+         stringSecond=""+seconds;
+     if (minutes<10)
+        stringMinute="0"+minutes;
+      else
+        stringMinute=""+minutes;
+      myTimer.innerHTML=`Timer: ${stringMinute}:${stringSecond}`;
+    
+}
+
+}
+
+//resetting the game when user presses the Reset Button
+let resetButton=document.getElementById("mybutton");
+resetButton.addEventListener('click',function(event){
+        starRating=3;
+        firstClick=1;
+        firstClickId="";
+        firstClickPosition=-1;
+        firstClickElement=null;
+        secondClickElement=null;
+        pictureup=0; /*counts the number of picture that has been turned up to know when the user has won*/
+        countMove=0;
+        countMoveElement=document.getElementById("myMoveCount");
+         countMoveElement.innerHTML=countMove;
+        for (let i=0;i<16;i++){
+             statusArray[i]="down"; /*All the array positions are initialized to down*/
+        }
+        reshuffleArray();
+        setStars(starRating);
+        clearInterval(runTimer);
+        Timer=displayTime();
+            });
+
+initialiseArray();
+reshuffleArray();
+Timer=displayTime();
+
 
 
 

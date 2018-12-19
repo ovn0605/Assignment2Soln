@@ -10,9 +10,28 @@
       <link href="css/card.css" rel="stylesheet">
    </head>
    <body>
-      <h1>Online game</h1>
+      <div id="titleblock">
+         <h1>Online game</h1>
+         <h3 id="movetitle">No of Moves:</h3>
+         <h3 id="mymovecount">0</h3>
+         <h3 id="mystar_rating"></h3>
+         <button id="mybutton" type="button">Reset</button>
+         <div ><h1 id="mytimer">Timer: 00:00</h1>
+               <h2 id="readme"><a href="README">Read Me </a></h2>
+         </div>
+      </div>
       <div id="mycontainer" class="container">
       </div>
+           <!-- The Modal -->
+          <div id="mymodal" class="modal">
+               <!-- Modal content -->
+            <div class="modal-content">
+               <span class="close">&times;</span>
+                  <p>Congratulations... You Won</p>
+            </div>
+         </div>
+               
+     
       <footer>
          <h3> Courtesy https://unsplash.com/search/photos/flora-and-fauna </h3>
       </footer>
