@@ -18,6 +18,8 @@ When the game starts, the page shows a 3* rating, starts a timer and starts coun
 
 If the user needs too many moves, the star rating will start reducing to 2, 1 then 0.
 
+The maximum number of moves for the different star rating has currently been kept at 32,38 and 44 for 3, 2 and 1 respectively.
+
 When the user finishes the game, the timer stops.
 
 A Reset button allows the user to rstart the game at any time.
