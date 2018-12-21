@@ -12,6 +12,8 @@ let pictureArray=[];
 let Timer=displayTime();
 let runTimer=0;
 let statusArray=[]; /*Keeps tract of pictures that have been turned up. Further clicks on such pictures have no effect*/
+let runtimeMintues=0;
+let runTimeSeconds=0;
 
 for (let i=0;i<16;i++){
 	statusArray.push("down"); /*All the array positions are initialized to down*/
@@ -38,7 +40,7 @@ for (let i=0; i<4; i++){
             let position=Number(event.target.id);//The position in the grid is obtainable from the id of the box
             if (statusArray[position]=="down"){
                  countMove++;
-                 countMoveElement=document.getElementById("myMoveCount");
+                 countMoveElement=document.getElementById("mymovecount");
                  countMoveElement.innerHTML=countMove;
                 if (countMove==1){
                     runTimer=setInterval(Timer,1000);
@@ -84,7 +86,13 @@ for (let i=0; i<4; i++){
 
                  }
                  if (pictureup==16){
-                    mymodal=document.getElementById("myModal");
+                    let takentime=document.getElementById("playtime");
+                    let totalmove=document.getElementById("totalmove");
+                    let starrating=document.getElementById("starrating");
+                    takentime.innerHTML=`Time Taken: ${runTimeMinutes} minutes and ${runTimeSeconds} seconds`;
+                    totalmove.innerHTML=`No. of Moves: ${countMove}`;
+                    starrating.innerHTML=`Star Rating: ${starRating}`;
+                    mymodal=document.getElementById("mymodal");
                      mymodal.style.display="block";
                      //If user wins stop the timer
                      clearInterval(runTimer);
@@ -190,6 +198,8 @@ function displayTime(){
       else
         stringMinute=""+minutes;
       myTimer.innerHTML=`Timer: ${stringMinute}:${stringSecond}`;
+      runTimeMinutes=minutes;
+      runTimeSeconds=seconds;
     
 }
 
@@ -206,7 +216,7 @@ resetButton.addEventListener('click',function(event){
         secondClickElement=null;
         pictureup=0; /*counts the number of picture that has been turned up to know when the user has won*/
         countMove=0;
-        countMoveElement=document.getElementById("myMoveCount");
+        countMoveElement=document.getElementById("mymovecount");
          countMoveElement.innerHTML=countMove;
         for (let i=0;i<16;i++){
              statusArray[i]="down"; /*All the array positions are initialized to down*/
@@ -214,6 +224,8 @@ resetButton.addEventListener('click',function(event){
         reshuffleArray();
         setStars(starRating);
         clearInterval(runTimer);
+        let mymodal=document.getElementById("mymodal");
+         mymodal.style.display="none";
         Timer=displayTime();
             });
 
