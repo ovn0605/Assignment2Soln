@@ -36,19 +36,25 @@ for (let i=0; i<4; i++){
         let posn=new Number(i*4+j);
         box.setAttribute("id",posn); 
         box.addEventListener("click",function(event){
+              /*preventing further mouse click until the processing is completed*/
+              for (let i=0; i<16;i++){
+                   element_i=document.getElementById(i);
+                   element_i.style.pointerEvents = 'none';
+              }
+            
 
             let position=Number(event.target.id);//The position in the grid is obtainable from the id of the box
+            console.log("position=");
+            console.log(position);
             if (statusArray[position]=="down"){
                  countMove++;
-                 countMoveElement=document.getElementById("mymovecount");
+                 countMoveElement=document.getElementById("mymovecount");//mymovecount is used to display the count for number of moves
                  countMoveElement.innerHTML=countMove;
                 if (countMove==1){
                     runTimer=setInterval(Timer,1000);
                  }
 
-                 if (countMove>44)
-                    starRating=0
-                 else if (countMove>38)
+                 if (countMove>38)
                     starRating=1
                 else if (countMove>32)
                      starRating=2;
@@ -76,7 +82,7 @@ for (let i=0; i<4; i++){
                         statusArray[firstClickPosition]="down";
                         statusArray[position]="down";
                         secondClickElement=element;
-                        setTimeout(myFunction,800);
+                        setTimeout(myFunction,300);
                        }
                     else { 
                         pictureup +=2;
@@ -96,11 +102,20 @@ for (let i=0; i<4; i++){
                      mymodal.style.display="block";
                      //If user wins stop the timer
                      clearInterval(runTimer);
-                     let span1=document.getElementsByClassName("close")[0];
-                     span1.onclick=function(){
-                      mymodal.style.display="none";}
-                 }
-
+                     let span1=document.getElementsByClassName("replay")[0]; //Choosing Any Button from the modal
+                    
+                      span1.onclick=function(){
+                         mymodal.style.display="none";
+                       }
+                      /*span1.onclick=function(){
+                        console.log("Button No has been clicked");
+                      mymodal.style.display="none";} */
+                }                
+                    
+              //re-enabling the mouse-click -after processing
+              console.log("reenabling click");
+              setTimeout(reenableClick,100);
+             
 });
         div1.appendChild(box);
         div.appendChild(div1);
@@ -205,9 +220,7 @@ function displayTime(){
 
 }
 
-//resetting the game when user presses the Reset Button
-let resetButton=document.getElementById("mybutton");
-resetButton.addEventListener('click',function(event){
+function Reset(){
         starRating=3;
         firstClick=1;
         firstClickId="";
@@ -227,7 +240,19 @@ resetButton.addEventListener('click',function(event){
         let mymodal=document.getElementById("mymodal");
          mymodal.style.display="none";
         Timer=displayTime();
+}
+
+//resetting the game when user presses the Reset Button
+let resetButton=document.getElementById("mybutton");
+resetButton.addEventListener('click',function(event){
+           Reset();
             });
+function reenableClick(){
+ for (let i=0; i<16;i++){
+                   element_i=document.getElementById(i);
+                  element_i.style.pointerEvents = 'auto';
+                   }
+}
 
 initialiseArray();
 reshuffleArray();

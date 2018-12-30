@@ -17,7 +17,7 @@
          <h3 id="mystar_rating"></h3>
          <button id="mybutton" type="button">Reset</button>
          <div ><h1 id="mytimer">Timer: 00:00</h1>
-               <h2 id="readme"><a href="README">Read Me </a></h2>
+               <h2 id="readme"><a href="ReadMe.html" target="_blank">Read Me </a></h2>
          </div>
       </div>
       <div id="mycontainer" class="container">
@@ -26,11 +26,15 @@
           <div id="mymodal" class="modal">
                <!-- Modal content -->
             <div class="modal-content">
-               <span class="close">&times;</span>
-                  <p>Congratulations... You Won</p>
-                  <p id="playtime"></p>
-                  <p id="totalmove"></p>
-                  <p id="starrating"></p>
+                <p>Congratulations... You Won</p>
+                <p id="playtime"></p>
+                <p id="totalmove"></p>
+                <p id="starrating"></p>
+                <div class="replay">
+                  <p>Would You Like To Play Again?</p>
+                  <button onclick="Reset()">Yes</button>
+                  <button>No</button>
+                </div>
             </div>
          </div>
                
