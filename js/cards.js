@@ -36,16 +36,11 @@ for (let i=0; i<4; i++){
         let posn=new Number(i*4+j);
         box.setAttribute("id",posn); 
         box.addEventListener("click",function(event){
-              /*preventing further mouse click until the processing is completed*/
-              for (let i=0; i<16;i++){
-                   element_i=document.getElementById(i);
-                   element_i.style.pointerEvents = 'none';
-              }
+            
             
 
             let position=Number(event.target.id);//The position in the grid is obtainable from the id of the box
-            console.log("position=");
-            console.log(position);
+            
             if (statusArray[position]=="down"){
                  countMove++;
                  countMoveElement=document.getElementById("mymovecount");//mymovecount is used to display the count for number of moves
@@ -73,19 +68,26 @@ for (let i=0; i<4; i++){
                     firstClickElement=element;
                     element.setAttribute("style","display:block"); //After the click on the block the picture is displayed
                                            }
-                 else{
+                 else{ // This is the second click of a pair
+                    /*preventing further mouse click until the processing is completed and both cards have been turned down if necessary*/
+                    for (let i=0; i<16;i++){
+                       element_i=document.getElementById(i);
+                        element_i.style.pointerEvents = 'none';
+                       }
+
                     statusArray[position]="up";
                     firstClick=1;
                     let element=event.target.firstChild;
                     element.setAttribute("style","display:block");
-                    if (firstClickElement.id!=element.id){
+                    if (firstClickElement.id!=element.id){ //The two pictures are not the same
                         statusArray[firstClickPosition]="down";
                         statusArray[position]="down";
                         secondClickElement=element;
-                        setTimeout(myFunction,300);
+                        setTimeout(myFunction,500); //This function will turn both picture down then re-enble mouse click.
                        }
-                    else { 
+                    else { //both pictures are same. Update the number of pictures that are up and re-enable mouse click
                         pictureup +=2;
+                        reenableClick();
                     }
 
                     }
@@ -112,10 +114,7 @@ for (let i=0; i<4; i++){
                       mymodal.style.display="none";} */
                 }                
                     
-              //re-enabling the mouse-click -after processing
-              console.log("reenabling click");
-              setTimeout(reenableClick,100);
-             
+                
 });
         div1.appendChild(box);
         div.appendChild(div1);
@@ -180,10 +179,20 @@ function setStars(starNum){
     starElement.innerHTML=str;
 }
 
+function reenableClick(){
+ for (let i=0; i<16;i++){
+          element_i=document.getElementById(i);
+           element_i.style.pointerEvents = 'auto';
+                   }
+}
+
 //This function turns both cards adown if the cards don't match
+// It then re-enbles clicks
 function myFunction(){
  firstClickElement.setAttribute("style","display:none");
  secondClickElement.setAttribute("style","display:none");
+ //re-enabling the mouse-click -after processing  
+ reenableClick();           
 }
 
 //This function displays a timer that is updated every second.
@@ -247,12 +256,7 @@ let resetButton=document.getElementById("mybutton");
 resetButton.addEventListener('click',function(event){
            Reset();
             });
-function reenableClick(){
- for (let i=0; i<16;i++){
-                   element_i=document.getElementById(i);
-                  element_i.style.pointerEvents = 'auto';
-                   }
-}
+
 
 initialiseArray();
 reshuffleArray();
