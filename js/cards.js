@@ -109,9 +109,7 @@ for (let i=0; i<4; i++){
                       span1.onclick=function(){
                          mymodal.style.display="none";
                        }
-                      /*span1.onclick=function(){
-                        console.log("Button No has been clicked");
-                      mymodal.style.display="none";} */
+                      
                 }                
                     
                 
@@ -125,17 +123,20 @@ for (let i=0; i<4; i++){
 
  /*courtesy- https://unsplash.com/search/photos/flora-and-fauna*/
 function initialiseArray(){
-pictureArray=[`<img id=picture1 src="images/picture1.jpg" alt="picture1">`, `<img id=picture2 src="images/picture2.jpg" alt="picture2">`,
-                   `<img id=picture3 src="images/picture3.jpg" alt="picture3">`, `<img id=picture4 src="images/picture4.jpg" alt="picture4">`,
-                   `<img id=picture5 src="images/picture5.jpg" alt="picture5">`,`<img id=picture6 src="images/picture6.jpg" alt="picture6">`,
-                  `<img id=picture7 src="images/picture7.jpg" alt="picture7">`,`<img id=picture8 src="images/picture8.jpg" alt="picture8">`,
-                  `<img id=picture1 src="images/picture1.jpg" alt="picture1">`, `<img id=picture2 src="images/picture2.jpg" alt="picture2">`,
-                   `<img id=picture3 src="images/picture3.jpg" alt="picture3">`, `<img id=picture4 src="images/picture4.jpg" alt="picture4">`,
-                   `<img id=picture5 src="images/picture5.jpg" alt="picture5">`,`<img id=picture6 src="images/picture6.jpg" alt="picture6">`,
-                  `<img id=picture7 src="images/picture7.jpg" alt="picture7">`,`<img id=picture8 src="images/picture8.jpg" alt="picture8">`]
-                  
+
+//since the names are picture1 to picture8- only the numerical values are placed in the array here.
+//The actual element is built in the reschuffleArray function
+for (let i=1; i<=8;i++){
+  pictureArray.push(i);
+   }
+
+for (let i=9; i<=16;i++){
+  pictureArray.push(i-8);
+   }
 }
-/*shuffle the array- To randomize */
+
+
+/*reshuffle the orders of the numbers in the array to randomize - then builds the picture elements*/
 function reshuffleArray(){
 
 let currentIndex=16;
@@ -151,17 +152,17 @@ while (0 != currentIndex) {
     pictureArray[randomIndex] = temporaryValue;
   }
 
-let k=0;
 let selector=document.getElementsByClassName("card");
 for (let i=0; i<selector.length;i++){
 	let myelement=selector[i];
-	myelement.innerHTML=pictureArray[k];
+  //The next two lines build the picture element using the reschuffled array
+  let pictNo="picture" + pictureArray[i];
+ 	myelement.innerHTML=`<img id="${pictNo}" src="images/${pictNo}.jpg" alt="${pictNo}">` ;
 	myelement.firstChild.setAttribute("style","display:none");
-	k++;
-	}
+		}
 }
-setStars(starRating);
 
+setStars(starRating);
 //This function displays the star rating a
 function setStars(starNum){
     let str='<p>Star Rating:';
